@@ -37,10 +37,10 @@ def get_queries(max_days = 2):
     converters = {index_query: convert_query, index_category: convert_category, index_count: convert_count}
     queries_dict = dict()
     for file_index, file_name in enumerate(os.listdir(data_dir)):
-            if file_index < max_days:
-                p = os.path.join(data_dir, file_name)
-                queries = pd.read_csv(p,delimiter='","', engine="python", header=0, names = col_names, quotechar='"',
+        if file_index < max_days:
+            p = os.path.join(data_dir, file_name)
+            queries = pd.read_csv(p,delimiter='","', engine="python", header=0, names = col_names, quotechar='"',
                                        converters=converters)
-                key = file_name[15:25]
-                queries_dict[key] = queries
+            key = file_name[15:25]
+            queries_dict[key] = queries
     return queries_dict
