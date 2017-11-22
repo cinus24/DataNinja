@@ -61,3 +61,14 @@ def get_ads_from_one_month(path, progress=False):
                     print(count)
     ads = DataFrame(lines, columns=col_names)
     return ads
+
+
+#NOTE: high RAM usage - may not work for large datasets
+def get_ads(max_months=2, progress=False):
+    ads_dict = dict()
+    for file_index, file_name in enumerate(os.listdir(data_dir)):
+        if file_index < max_months:
+            ads = get_ads_from_one_month(file_name, progress)
+            key = file_name
+            ads_dict[key] = ads
+    return ads_dict
