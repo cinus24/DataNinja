@@ -41,11 +41,11 @@ def count_categories(queries_category, categories, date):
     queries_category = queries_category[queries_category.category.notnull()]
     queries_category = queries_category.groupby('category', as_index=False).sum();
     queries_category = queries_category.sort_values(by=["count"], ascending=False)
-    queries_category = pd.merge(queries_category, categories, how='left', on='category')
+    queries_category = pd.merge(queries_category, categories, how='right', on='category')
     queries_category['Date'] = date
     queries_category.reset_index(drop=True)
-    with open('CategoriesCount.csv', 'a') as f:
-        queries_category.to_csv(f, header=True)
+    with open('categoriesCount.csv', 'a') as f:
+        queries_category.to_csv(f, header=False)
 
 def read_categories():
     categories = pd.read_csv(categories_dir, names = categories_col_names)

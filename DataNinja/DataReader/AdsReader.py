@@ -33,7 +33,7 @@ def convert_count(a):
     return int(a)
 
 
-def get_ads(max_days=2):
+def get_ads(max_days=1):
     print("START")
     converters = {index_query: convert_query, index_category: convert_category, index_count: convert_count}
     ads_dict = dict()
@@ -42,7 +42,7 @@ def get_ads(max_days=2):
         if file_index < max_days:
             p = os.path.join(data_dir, file_name)
             ads = pd.read_csv(p,delimiter='","', engine="python", header=0, quotechar='"')
-            print(ads)
+            print("READY")
     # return queries_dict
 
 get_ads()
