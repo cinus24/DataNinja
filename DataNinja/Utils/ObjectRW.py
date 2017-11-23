@@ -1,5 +1,8 @@
 import pickle
 
+from DataNinja.DataReader.QueryReader import get_selected_queries
+from DataNinja.Utils.Dir import list_dirs
+
 """
 Saving and loading object to/from files
 """
@@ -21,3 +24,14 @@ Loads object from .pkl file
     """
     with open('saved/' + name + '.pkl', 'rb') as f:
         return pickle.load(f)
+
+def save_queries_to_files(data_dir):
+    """
+Saves all queries csv's from data directory to separate files
+    :param data_dir:
+    """
+    max_days = 14
+    month_strings = list_dirs(data_dir)
+    for month in month_strings:
+        queries_dict = get_selected_queries(max_days, month)
+        save_obj(queries_dict, month)
