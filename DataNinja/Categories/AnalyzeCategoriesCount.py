@@ -40,18 +40,22 @@ categories_top50_category_per_count = sorted(categories_top50_category_per_count
 for i in range(0, categories_count):
     y = [];
     x = [];
+    day_from = 0;
+    day_too = 50;
     if(categories_top50_category_per_count[i][0] <= 80 and categories_top50_category_per_count[i][0] > 25 and categories_top50_category_per_count[i][0] != 0):
         #print(categories_top50_category_per_count[i])
         if(categories_top50_category_per_count[i][0] <= 80 and categories_top50_category_per_count[i][0] > 25 and categories_top50_category_per_count[i][0] != 0):
 
-                for j in range(0,days_count):
+                for j in range(day_from,day_too):
                     #print(categories.loc[categories['category'] == categories_top50_category_per_count[i][1]]['count'].values[j])
-                    y.append(categories.loc[categories['category'] == categories_top50_category_per_count[i][1]]['count'].values[j])#/ queries_count_per_day.iloc[[j]].values[0])
+                    y.append(categories.loc[categories['category'] == categories_top50_category_per_count[i][1]]['count'].values[j]/ queries_count_per_day.iloc[[j]].values[0])
+                    x.append(categories.loc[categories['category'] == categories_top50_category_per_count[i][1]]['Date'].values[j])
                     #x.append(categories.loc[categories['category'] == categories_top50_category_per_count[i][1]]['Date'].values[j])
                 #y = [value for value in y if not math.isnan(value)]
-                x = range(0,days_count)
-                print(y)
+                #x = range(0,50)
+
+                plt.rcParams.update({'font.size': 6})
                 plt.title(categories.loc[categories['category'] == categories_top50_category_per_count[i][1]]['name'].values[0])
                 plt.plot(x, y, 'ro')
-
+                plt.xticks(rotation=45)
                 plt.show()
