@@ -31,7 +31,8 @@ categories = read_file();
 map(categories)
 mining(categories)
 
-
+queries_count_per_day = categories[['Date','count']].groupby('Date').aggregate(sum);
+print(queries_count_per_day)
 
 for i in range(0, categories_count):
     categories_top50_category_per_count.append((categories_top50_count[i], categories_map[i]))
@@ -44,10 +45,13 @@ for i in range(0, categories_count):
         if(categories_top50_category_per_count[i][0] <= 80 and categories_top50_category_per_count[i][0] > 25 and categories_top50_category_per_count[i][0] != 0):
 
                 for j in range(0,days_count):
-                    y.append(categories.loc[categories['category'] == categories_top50_category_per_count[i][1]]['count'].values[j])
+                    #print(categories.loc[categories['category'] == categories_top50_category_per_count[i][1]]['count'].values[j])
+                    y.append(categories.loc[categories['category'] == categories_top50_category_per_count[i][1]]['count'].values[j])#/ queries_count_per_day.iloc[[j]].values[0])
                     #x.append(categories.loc[categories['category'] == categories_top50_category_per_count[i][1]]['Date'].values[j])
                 #y = [value for value in y if not math.isnan(value)]
                 x = range(0,days_count)
+                print(y)
                 plt.title(categories.loc[categories['category'] == categories_top50_category_per_count[i][1]]['name'].values[0])
                 plt.plot(x, y, 'ro')
+
                 plt.show()
