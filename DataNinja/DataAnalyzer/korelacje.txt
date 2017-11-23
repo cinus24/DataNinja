@@ -1,3 +1,4 @@
 wyswietlenia-sprzedane: 0,016 p znikome
 ogloszenia-sprzedane; 0.095 p znikome
 
+wyswietlenia-ogloszenia 0.389 p w miare
