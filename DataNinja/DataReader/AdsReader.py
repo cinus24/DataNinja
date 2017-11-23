@@ -110,7 +110,7 @@ def get_ads(max_months=2, progress=False):
 
 
 def get_ads_from_one_month_clean(path):
-    return pd.read_csv(Config.ADS_DATA_CATALOG + "/" + path, delimiter=',', names=col_names)
+    return pd.read_csv(Config.ADS_DATA_CATALOG + "/" + path, delimiter=',', names=col_names, header=0)
 
 
 def get_ads_clean(max_months=2):
@@ -121,4 +121,3 @@ def get_ads_clean(max_months=2):
             key = file_name
             ads_dict[key] = ads
     return ads_dict
-
