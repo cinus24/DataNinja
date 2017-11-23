@@ -2,6 +2,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import DataNinja.DataReader.AdsReader as AdsReader
 from DataNinja.Utils.Types import represents_float
+import scipy
+import scipy.stats
 
 
 def count_views():
@@ -59,7 +61,7 @@ def count_replies():
 
 
 def count_sold():
-    ads = AdsReader.get_ads_clean(max_months=1)
+    ads = AdsReader.get_ads_clean(max_months=11)
     sold_clean = []
     for month in ads:
         sold = ads[month]["sold"].dropna()
@@ -86,4 +88,32 @@ def count_sold():
     ax.set_xticklabels(["", "", "nie", "", "", "tak"])
     ax.grid(True)
     plt.show()
+
+
+def calculate_correlation():
+    ads = AdsReader.get_ads_clean(max_months=11)
+    views_clean = []
+    sold_clean = []
+    for month in ads:
+        views_sold = ads[month][["replies", "views"]].dropna()
+        views = views_sold["views"]
+        sold = views_sold["replies"]
+        counter = 0
+        for x in views:
+            if isinstance(x, float):
+                if isinstance(sold.iloc[counter], float):
+                    sold_clean.append(sold.iloc[counter])
+                    views_clean.append(x)
+            counter += 1
+    print(scipy.stats.pearsonr(views_clean, sold_clean))
+    plt.plot(views_clean, sold_clean, 'ro')
+    plt.grid(True)
+    plt.xlabel("Liczba wy\u015Bwietle\u0144")
+    plt.ylabel("Liczba odpowiedzi")
+    plt.show()
+
+calculate_correlation()
+
+
+
 
