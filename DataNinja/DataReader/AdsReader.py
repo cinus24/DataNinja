@@ -2,6 +2,7 @@ import pandas as pd
 import os
 import re
 import codecs
+import csv
 from pandas.util.testing import DataFrame
 import DataNinja.DataReader.Config as Config
 
@@ -20,6 +21,7 @@ def represents_int(s):
     return False
 
 
+# FIXME: freezes at some files
 def get_ads_from_one_month(path, progress=False):
     file = codecs.open(Config.ADS_DATA_CATALOG + "/" + path, encoding='utf8')
     lines = []
@@ -61,11 +63,42 @@ def get_ads_from_one_month(path, progress=False):
                     lines[size-1] += new_line_stats
                 if progress:
                     print(count)
+
     ads = DataFrame(lines, columns=col_names)
     return ads
 
 
-#NOTE: high RAM usage - may not work for large datasets
+def get_ads_test(path, progress=False):
+    file = codecs.open(Config.ADS_DATA_CATALOG + "/" + path, encoding='utf8')
+    lines = []
+    count = 0
+    for line in file:
+        line = line.strip()
+        line = line.replace("\"\"", "")
+        line = re.sub('[a-zA-Z],[a-zA-Z]]', '', line)
+        line = line.split(",")
+        if len(line) > 7:
+            new_line_info = []
+            is_info = True
+            for i in range(0, 4):
+                if not represents_int(line[i][1:-1]):
+                    is_info = False
+                    break
+            if is_info:
+                new_line_info += line[0:3]
+            if is_info:
+                if len(new_line_info) > 0:
+                    for i in range(0, 3):
+                        new_line_info[i] = new_line_info[i].replace("\"", "")
+                    lines.append(new_line_info)
+                    count += 1
+                if progress:
+                    print(count)
+
+    ads = DataFrame(lines, columns=col_names[0:3])
+    return ads
+
+# NOTE: high RAM usage - may not work for large datasets
 def get_ads(max_months=2, progress=False):
     ads_dict = dict()
     for file_index, file_name in enumerate(os.listdir(data_dir)):
@@ -74,3 +107,18 @@ def get_ads(max_months=2, progress=False):
             key = file_name
             ads_dict[key] = ads
     return ads_dict
+
+
+def get_ads_from_one_month_clean(path):
+    return pd.read_csv(Config.ADS_DATA_CATALOG + "/" + path, delimiter=',', names=col_names)
+
+
+def get_ads_clean(max_months=2):
+    ads_dict = dict()
+    for file_index, file_name in enumerate(os.listdir(data_dir)):
+        if file_index < max_months:
+            ads = get_ads_from_one_month_clean(file_name)
+            key = file_name
+            ads_dict[key] = ads
+    return ads_dict
+
