@@ -5,6 +5,7 @@ import codecs
 import csv
 from pandas.util.testing import DataFrame
 import DataNinja.DataReader.Config as Config
+from DataNinja.Utils.Types import represents_int
 
 data_dir = Config.ADS_DATA_CATALOG
 
@@ -12,13 +13,6 @@ index_query = 0
 index_category = 1
 index_count = 2
 col_names = ["id", "region_id", "category_id", "sold", "replies", "views"]
-
-def represents_int(s):
-    regex = "^[0-9]+$"
-    regex_test = re.compile(regex)
-    if regex_test.match(s):
-        return True
-    return False
 
 
 # FIXME: freezes at some files
@@ -103,6 +97,7 @@ def get_ads(max_months=2, progress=False):
     ads_dict = dict()
     for file_index, file_name in enumerate(os.listdir(data_dir)):
         if file_index < max_months:
+            print(file_name)
             ads = get_ads_from_one_month(file_name, progress)
             key = file_name
             ads_dict[key] = ads
