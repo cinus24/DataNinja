@@ -39,24 +39,26 @@ def get_ads_from_one_month(path, progress=False):
                     is_info = False
                     break
             if is_info:
-                new_line_info.append(line[0:3])
+                new_line_info += line[0:3]
             for l in line:
                 if l == "\"f\"" or l == "\"t\"":
                     is_stats = True
                 if is_stats:
+                    l = l.replace("\"", "")
                     new_line_stats.append(l)
             if len(new_line_stats) > 8:
                 new_line_stats = new_line_stats[-8:]
                 new_line_stats = new_line_stats[0:3]
             if is_stats or is_info:
                 if len(new_line_info) > 0:
+                    for i in range(0, 3):
+                        new_line_info[i] = new_line_info[i].replace("\"", "")
                     lines.append(new_line_info)
                     count += 0.5
                 if len(new_line_stats) > 0:
                     count += 0.5
                     size = len(lines)
-                    lines[size-1].append(new_line_stats)
-                    lines[size-1] = sum(lines[size-1], [])
+                    lines[size-1] += new_line_stats
                 if progress:
                     print(count)
     ads = DataFrame(lines, columns=col_names)
