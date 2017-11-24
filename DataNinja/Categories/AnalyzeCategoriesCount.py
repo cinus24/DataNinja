@@ -40,8 +40,8 @@ categories_top50_category_per_count = sorted(categories_top50_category_per_count
 for i in range(0, categories_count):
     y = [];
     x = [];
-    day_from = 0;
-    day_too = 50;
+    day_from = 90;
+    day_too = 150;
     if(categories_top50_category_per_count[i][0] <= 80 and categories_top50_category_per_count[i][0] > 25 and categories_top50_category_per_count[i][0] != 0):
         #print(categories_top50_category_per_count[i])
         if(categories_top50_category_per_count[i][0] <= 80 and categories_top50_category_per_count[i][0] > 25 and categories_top50_category_per_count[i][0] != 0):
@@ -55,8 +55,8 @@ for i in range(0, categories_count):
                 #x = range(0,50)
                 fig = plt.figure()
                 ax = fig.add_subplot(111)
-                plt.rcParams.update({'font.size': 6})
-                plt.title(categories.loc[categories['category'] == categories_top50_category_per_count[i][1]]['name'].values[0])
+                plt.rcParams.update({'font.size': 10})
+                plt.title("Popularno\u015B\u0107 kategorii " + categories.loc[categories['category'] == categories_top50_category_per_count[i][1]]['name'].values[0], fontsize=20)
                 ax.plot(x, y, '-')
                 plt.xticks(rotation=45)
                 ax.grid(True)
@@ -67,7 +67,7 @@ for i in range(0, categories_count):
                     else:
                         temp_ticks.append("")
                 ax.set_xticklabels(temp_ticks)
-                plt.ylabel("Udzia\u0142 zapytania w stosunku do ca\u0142osci")
-                plt.xlabel("Dzie\u0144")
+                plt.ylabel("Udzia\u0142 zapytania w stosunku do ca\u0142osci", fontsize=12)
+                plt.xlabel("Dzie\u0144", fontsize=12)
                 plt.show()
 
