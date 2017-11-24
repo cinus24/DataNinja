@@ -52,14 +52,12 @@ def training_ranking():
                 best_categories.append((count_tab[i], name_tab[i], category_tab[i]))
 
         best_categories = sorted(best_categories, reverse=True)
+        print(best_categories[0:20])
         x = []
         y = []
         for i in range(0, 10):
                 x.append(best_categories[i][1])
                 y.append(best_categories[i][0])
-
-        print(x)
-        print(y)
         plt.rcParams.update({'font.size': 6})
         p = plt.bar(range(0,10),y)
         plt.title("Ranging kategorii treningowych")
@@ -83,6 +81,8 @@ def test_ranking():
         for i in range(0,10):
                 x.append(df.iloc[i]["name"])
                 y.append(df.iloc[i]["count"])
+        for i in range(0,20):
+                print(df.iloc[i]["category_id"])
         plt.rcParams.update({'font.size': 6})
         p = plt.bar(range(0,10),y)
         plt.title("Ranging kategorii testowych")
@@ -93,7 +93,7 @@ def test_ranking():
         plt.show()
 ads = ad.get_ads_clean(11)
 categories = categories()
-#training_ranking()
+training_ranking()
 test_ranking()
 
 
