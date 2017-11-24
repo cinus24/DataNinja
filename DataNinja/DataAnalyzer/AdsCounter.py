@@ -112,8 +112,59 @@ def calculate_correlation():
     plt.ylabel("Liczba odpowiedzi")
     plt.show()
 
-calculate_correlation()
 
+def calculate_correlation_categories():
+    ads = AdsReader.get_ads_clean(max_months=11)
+    categories = ["Komputery stacj.", "Laptopy", "Monitory"]
+    cat_15 = 7267
+    cat_207 = 18471
+    cat_32 = 2234
+    sum_15 = 0
+    sum_207 = 0
+    sum_32 = 0
+    for month in ads:
+        cat_sold = ads[month][["category_id", "views"]].dropna()
+        group_sold = cat_sold.groupby("category_id")
+        keys = group_sold.groups.keys()
+        if 1197 in keys:
+            group = group_sold.get_group(1197)
+            for x in group["views"]:
+                if isinstance(x, float):
+                    sum_15 += x
+        if '1197' in keys:
+            group = group_sold.get_group('1197')
+            for x in group["views"]:
+                if isinstance(x, float):
+                    sum_15 += x
+        if 1199 in keys:
+            group = group_sold.get_group(1199)
+            for x in group["views"]:
+                if isinstance(x, float):
+                    sum_207 += x
+        if '1199' in keys:
+            group = group_sold.get_group('1199')
+            for x in group["views"]:
+                if isinstance(x, float):
+                    sum_207 += x
+        if 1201 in keys:
+            group = group_sold.get_group(1201)
+            for x in group["views"]:
+                if isinstance(x, float):
+                    sum_32 += x
+        if '1201' in keys:
+            group = group_sold.get_group('1201')
+            for x in group["views"]:
+                if isinstance(x, float):
+                    sum_32 += x
+    div = [sum_15*100/cat_15, sum_207*100/cat_207, sum_32*100/cat_32]
+    print(div)
+    plt.bar(categories, div)
+    plt.grid(True)
+    plt.xlabel("Kategoria")
+    plt.ylabel("Stosunek liczby wy\u015Bwietlonych do liczby zapyta\u0144 [%]")
+    plt.show()
+
+calculate_correlation_categories()
 
 
 
