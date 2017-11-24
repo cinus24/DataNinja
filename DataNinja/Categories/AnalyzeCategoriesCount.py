@@ -53,9 +53,21 @@ for i in range(0, categories_count):
                     #x.append(categories.loc[categories['category'] == categories_top50_category_per_count[i][1]]['Date'].values[j])
                 #y = [value for value in y if not math.isnan(value)]
                 #x = range(0,50)
-
+                fig = plt.figure()
+                ax = fig.add_subplot(111)
                 plt.rcParams.update({'font.size': 6})
                 plt.title(categories.loc[categories['category'] == categories_top50_category_per_count[i][1]]['name'].values[0])
-                plt.plot(x, y, 'ro')
+                ax.plot(x, y, '-')
                 plt.xticks(rotation=45)
+                ax.grid(True)
+                temp_ticks = []
+                for i in range(0, len(x)):
+                    if i % 3 == 0:
+                        temp_ticks.append(x[i])
+                    else:
+                        temp_ticks.append("")
+                ax.set_xticklabels(temp_ticks)
+                plt.ylabel("Udzia\u0142 zapytania w stosunku do ca\u0142osci")
+                plt.xlabel("Dzie\u0144")
                 plt.show()
+
