@@ -1,7 +1,12 @@
 import re
 import codecs
+from sklearn.feature_extraction.text import TfidfVectorizer
 import DataNinja.DataReader.Config as Config
 import pandas as pd
+from pyMorfologik import Morfologik
+from pyMorfologik.parsing import ListParser
+from collections import Counter
+import json
 
 column_names = ["id", "region_id", "category_id", "subregion_id", "district_id", "city_id", "accurate_location", "user_id",
                 "sorting_date", "created_at_first", "valid_to", "title", "description", "full_description", "has_phone",
@@ -79,8 +84,34 @@ def get_ads_from_one_month():
 
 def to_dataframe():
     df = pd.read_csv('ads_2016_11_01.txt', sep=",", header=None, names=column_names)
-    print(df.iloc[0])
+    all = []
+    stemmedStr = ""
+    for i in range(0, 10000):
+        parser = ListParser()
+        stemmer = Morfologik()
+        print(i)
+        stemms = stemmer.stem([df.iloc[i].full_description], parser)
+        stemmedList = []
+        # stemmedStr = ""
+        for key in stemms:
+            words = key[1].keys()
+            if len(words) > 0:
+                stemmedStr += list(words)[0] + " "
+                # stemmedList.append(list(words)[0]
+        # print(Counter(stemmedList))
+        # all.append(stemmedStr)
+    with open("stop-words.txt") as f:
+        content = f.readlines()
+    content = [x.strip() for x in content]
+    vectorizer = TfidfVectorizer(sublinear_tf=True, stop_words=content)
+    tfidf_matrix = vectorizer.fit_transform([stemmedStr])
+    feature_names = vectorizer.get_feature_names()
+    dense = tfidf_matrix.todense()
+    denselist = dense.tolist()
+    df = pd.DataFrame(denselist, columns=feature_names)
+    s = pd.Series(df.loc[0])
+    print(s[s > 0].sort_values(ascending=False)[:10])
 
 
-get_ads_from_one_month()
+# get_ads_from_one_month()
 to_dataframe()
