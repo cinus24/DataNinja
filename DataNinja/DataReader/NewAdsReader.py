@@ -77,8 +77,8 @@ def get_ads_from_one_month():
         file_write.close()
         file.close()
 
-def to_dataframe(index):
-    df = pd.read_csv(Config.ADS_GENERATED_DATA_CATALOG + "\\" + files[index] + ".txt", sep=",", names=column_names, nrows=20000)
+def to_dataframe(index, nrows):
+    df = pd.read_csv(Config.ADS_GENERATED_DATA_CATALOG + "\\" + files[index] + ".txt", sep=",", names=column_names, nrows=nrows)
     df = df.drop(["reply_call", "reply_sms", "reply_chat",
                 "reply_call_intent", "reply_chat_intent"], axis=1)
     return df
